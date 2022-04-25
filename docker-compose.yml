@@ -1,17 +1,22 @@
 services:
   Service 1:
-    build: ./dashboard/
-    image : opstrace/tracing-api
+    build: .
+    image : 
     ports:
       - "-3000:3000"
   Service 2:
     build: .
-    image : openzipkin/zipkin:latest
+    image : 
     ports:
-      - "-9411:9411"
+      - "-3002:3002"
+  Service 3:
+    build: .
+    image :
+    ports:
+      - "-3003:3003"
   prometheus:
-    build: ./movies/
-    image: prom/prometheus:v2.1.0
+    build: .
+    image: /etc/prometheus/prometheus.yml
     volumes:
       - ./prometheus/:/etc/prometheus/
       - prometheus_data:/prometheus
@@ -21,5 +26,14 @@ services:
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
     ports:
-      - "-3002:3002"
-
+      - "-3002:9090"
+  Grafana:
+    build: .
+    image : grafana/grafana
+    ports:
+      - "-9999:9999"
+  Zipkin:
+    build: .
+    image : openzipkin/zipkin:latest
+    ports:
+      - "-9411:3000"
