@@ -1,0 +1,25 @@
+services:
+  Service 1:
+    build: ./dashboard/
+    image : opstrace/tracing-api
+    ports:
+      - "-3000:3000"
+  Service 2:
+    build: .
+    image : openzipkin/zipkin:latest
+    ports:
+      - "-9411:9411"
+  prometheus:
+    build: ./movies/
+    image: prom/prometheus:v2.1.0
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - -3002:3002
+
